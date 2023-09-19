@@ -1,2 +1,2 @@
-bstract splash of color cyberpunk, highly detailed, sharp focus, realistic, masterpiece, amazing, colorful, glistening
+abstract splash of color cyberpunk, highly detailed, sharp focus, realistic, masterpiece, amazing, colorful, glistening
 Steps: 20, Sampler: DPM++ 2M Karras, CFG scale: 7, Seed: 2720187006, Size: 512x512, Model hash: 777f31751a, Model: sdvn6Realxl_detailface, Version: v1.6.0
