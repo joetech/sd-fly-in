@@ -198,17 +198,11 @@ def mergeImage(baseImage, depth):
     return output_filename
 
 
-
-
-
-prompt = "abstract splash of color cyberpunk woman, highly detailed, sharp focus, realistic, masterpiece, amazing, colorful, glistening"
-
-# createBaseImage(prompt)
-
-splitImage("1.png", 9, 2, [
+baseImage = "1.png"
+numberOfPartsToSplit = 9
+depthToTraverse = 2
+depthPrompts = [
     "abstract splash of color cyberpunk world, highly detailed, sharp focus, realistic, masterpiece, amazing, colorful, glistening",
     "abstract splash of color cyberpunk woman, highly detailed, sharp focus, realistic, masterpiece, amazing, colorful, glistening"
-])
-
-# output = mergeImage("1.png", 2)
-# print(f"Merged image saved as: {output}")
+]
+splitImage(baseImage, numberOfPartsToSplit, depthToTraverse, depthPrompts)
