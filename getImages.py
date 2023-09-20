@@ -1,8 +1,34 @@
 import os
 import sys
+import json
 from PIL import Image
 import re
 import webuiapi # https://github.com/mix1009/sdwebuiapi
+
+# Read the configuration file
+with open('config.json', 'r') as f:
+    config = json.load(f)
+
+# Extract the variables from the configuration
+host = config['host']
+port = config['port']
+model = config['model']
+negative_prompt = config['negative_prompt']
+cfg_scale = config['cfg_scale']
+sampler_name = config['sampler_name']
+steps = config['steps']
+width = config['width']
+height = config['height']
+denoising_strength = config['denoising_strength']
+MAX_SIZE = config['MAX_SIZE']
+baseImage = config['baseImage']
+numberOfPartsToSplit = config['numberOfPartsToSplit']
+depthToTraverse = config['depthToTraverse']
+depthPrompts = config['depthPrompts']
+
+# Define a constant for the image directory
+IMAGES_DIR = './images/'
+
 
 def listModels():
     # List available models 
@@ -40,7 +66,7 @@ def createBaseImage(prompt):
     # Handle the resulting images by saving them to ./images
     imgnum=1
     for i in result.images:
-        filename=f"./images/tmp.png"
+        filename=f"{IMAGES_DIR}tmp.png"
         i.save(filename)
         imgnum+=1
 
@@ -50,7 +76,7 @@ def replaceImage(fileName, prompt):
 
     api = webuiapi.WebUIApi(host='127.0.0.1', port=7860)
 
-    image = Image.open(f"./images/{fileName}")
+    image = Image.open(f"{IMAGES_DIR}{fileName}")
 
     # Select a model
     api.util_set_model('sdvn6Realxl_detailface')
@@ -81,7 +107,7 @@ def replaceImage(fileName, prompt):
     # Handle the resulting images by saving them to ./images
     imgnum=1
     for i in result.images:
-        savefile = f"./images/{fileName}"
+        savefile = f"{IMAGES_DIR}{fileName}"
         # savefile.replace(".png", f".-opt-{imgnum}.png") # uncomment if n_iter is > 1
         i.save(savefile)
         imgnum+=1
@@ -89,7 +115,7 @@ def replaceImage(fileName, prompt):
 
 def splitImage(fileName, numberOfParts, depth, prompts):
     currentDepth = 1
-    imagesDir = "./images/"
+    imagesDir = IMAGES_DIR
 
     print(f"Working on depth {currentDepth} of {depth}")
 
@@ -136,7 +162,7 @@ def splitImage(fileName, numberOfParts, depth, prompts):
 def mergeImage(baseImage, depth):
     assert depth > 0, "Depth must be greater than 1"
     
-    imagesDir = "./images/"
+    imagesDir = IMAGES_DIR
     
     # Construct the search pattern based on baseImage and depth
     prefix = baseImage.replace(".png", "")

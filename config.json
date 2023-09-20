@@ -1,0 +1,20 @@
+{
+    "host": "127.0.0.1",
+    "port": 7860,
+    "model": "sdvn6Realxl_detailface",
+    "negative_prompt": "nsfw, nude, naked",
+    "cfg_scale": 7,
+    "sampler_name": "DPM++ 2M Karras",
+    "steps": 20,
+    "width": 512,
+    "height": 512,
+    "denoising_strength": 0.45,
+    "MAX_SIZE": 1024,
+    "baseImage": "1.png",
+    "numberOfPartsToSplit": 9,
+    "depthToTraverse": 2,
+    "depthPrompts": [
+        "abstract splash of color cyberpunk world, highly detailed, sharp focus, realistic, masterpiece, amazing, colorful, glistening",
+        "abstract splash of color cyberpunk woman, highly detailed, sharp focus, realistic, masterpiece, amazing, colorful, glistening"
+    ]
+}
