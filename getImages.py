@@ -93,8 +93,6 @@ def splitImage(fileName, numberOfParts, depth, prompts):
 
     print(f"Working on depth {currentDepth} of {depth}")
 
-    currentPrompt = prompts.pop(0)
-
     print(f"Splitting image {fileName} into {numberOfParts} parts.")
     image = Image.open(imagesDir + fileName)
     w, h = image.size
@@ -122,11 +120,12 @@ def splitImage(fileName, numberOfParts, depth, prompts):
             part.save(imagesDir + partFileName)
 
             # Replace the image part
-            replaceImage(partFileName, currentPrompt)
+            if currentDepth < len(prompts):
+                replaceImage(partFileName, prompts[currentDepth])
 
             # Recursive call
-            if depth > 1 and prompts:
-                splitImage(partFileName, numberOfParts, depth-1, prompts)
+            if currentDepth < depth and currentDepth < len(prompts):
+                splitImage(partFileName, numberOfParts, depth - currentDepth, prompts[currentDepth])
 
     currentDepth += 1
     output = mergeImage(fileName, depth)
@@ -135,7 +134,7 @@ def splitImage(fileName, numberOfParts, depth, prompts):
 
 
 def mergeImage(baseImage, depth):
-    assert depth > 1, "Depth must be greater than 1"
+    assert depth > 0, "Depth must be greater than 1"
     
     imagesDir = "./images/"
     
@@ -174,6 +173,23 @@ def mergeImage(baseImage, depth):
         
         merged_image.paste(image, (x_offset, y_offset))
     
+    MAX_SIZE = 1024
+
+    # Check if the image dimensions exceed the maximum size
+    if merged_image.width > MAX_SIZE or merged_image.height > MAX_SIZE:
+        # Calculate the ratio to resize the image proportionally
+        ratio = min(MAX_SIZE / merged_image.width, MAX_SIZE / merged_image.height)
+        new_width = int(merged_image.width * ratio)
+        new_height = int(merged_image.height * ratio)
+
+        # Resize the image
+        merged_image = merged_image.resize((new_width, new_height), Image.ANTIALIAS)
+
+    # Save the image
+    output_filename = prefix + ".png"
+    merged_image.save(imagesDir + output_filename)
+
+
     # Save or return the merged image (you can modify as needed)
     # output_filename = prefix + "_merged.png"
     output_filename = prefix + ".png"
@@ -189,7 +205,7 @@ prompt = "abstract splash of color cyberpunk woman, highly detailed, sharp focus
 
 # createBaseImage(prompt)
 
-splitImage("1.png", 4, 3, [
+splitImage("1.png", 9, 2, [
     "abstract splash of color cyberpunk world, highly detailed, sharp focus, realistic, masterpiece, amazing, colorful, glistening",
     "abstract splash of color cyberpunk woman, highly detailed, sharp focus, realistic, masterpiece, amazing, colorful, glistening"
 ])
