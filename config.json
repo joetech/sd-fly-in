@@ -1,20 +1,22 @@
 {
     "host": "127.0.0.1",
     "port": 7860,
-    "model": "sdvn6Realxl_detailface",
-    "negative_prompt": "nsfw, nude, naked",
+    "model": "v1-5-pruned",
+    "negative_prompt": "",
     "cfg_scale": 7,
     "sampler_name": "DPM++ 2M Karras",
     "steps": 20,
-    "width": 512,
-    "height": 512,
-    "denoising_strength": 0.45,
+    "width": 768,
+    "height": 768,
+    "denoising_strength": 1,
     "MAX_SIZE": 1024,
     "baseImage": "1.png",
-    "numberOfPartsToSplit": 9,
-    "depthToTraverse": 2,
+    "numberOfPartsToSplit": 4,
+    "depthToTraverse": 3,
     "depthPrompts": [
-        "abstract splash of color cyberpunk world, highly detailed, sharp focus, realistic, masterpiece, amazing, colorful, glistening",
-        "abstract splash of color cyberpunk woman, highly detailed, sharp focus, realistic, masterpiece, amazing, colorful, glistening"
+        "((futuristic city)), extremely detailed, detail, fine, highly detailed, intricate, realistic, beautiful <lora:CITYSCAPE:1>",
+        "((futuristic city)), extremely detailed, detail, fine, highly detailed, intricate, realistic, beautiful <lora:CITYSCAPE:1>",
+        "((futuristic city)), extremely detailed, detail, fine, highly detailed, intricate, realistic, beautiful <lora:CITYSCAPE:1>",
+        "((futuristic city)), extremely detailed, detail, fine, highly detailed, intricate, realistic, beautiful <lora:CITYSCAPE:1>"
     ]
 }

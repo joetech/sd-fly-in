@@ -50,14 +50,14 @@ def createBaseImage(prompt):
     print(f"Prompt:\n{prompt}\n")
 
     result = api.txt2img(prompt=prompt,
-                        negative_prompt="nsfw, nude, naked",
+                        negative_prompt=negative_prompt,
                         seed=-1,
-                        cfg_scale=7,
+                        cfg_scale=cfg_scale,
                         n_iter=1,
-                        sampler_index='DPM++ 2M Karras',
-                        steps=20,
-                        width=512,
-                        height=512,
+                        sampler_index=sampler_name,
+                        steps=steps,
+                        width=width,
+                        height=height,
                         )
 
     # uncomment for debugging
@@ -158,11 +158,12 @@ def splitImage(fileName, numberOfParts, depth, prompts):
     print(f"Merged image saved as: {output}")
 
 
-
 def mergeImage(baseImage, depth):
     assert depth > 0, "Depth must be greater than 1"
     
     imagesDir = IMAGES_DIR
+    imagesSubDir = imagesDir + baseImage.replace(".png", "-parts") + '/'
+    os.mkdir(imagesSubDir)
     
     # Construct the search pattern based on baseImage and depth
     prefix = baseImage.replace(".png", "")
@@ -198,6 +199,8 @@ def mergeImage(baseImage, depth):
         y_offset = (idx // split_size) * h
         
         merged_image.paste(image, (x_offset, y_offset))
+        os.replace(imagesDir + filename, imagesSubDir + filename)
+
     
     MAX_SIZE = 1024
 
@@ -224,11 +227,4 @@ def mergeImage(baseImage, depth):
     return output_filename
 
 
-baseImage = "1.png"
-numberOfPartsToSplit = 9
-depthToTraverse = 2
-depthPrompts = [
-    "abstract splash of color cyberpunk world, highly detailed, sharp focus, realistic, masterpiece, amazing, colorful, glistening",
-    "abstract splash of color cyberpunk woman, highly detailed, sharp focus, realistic, masterpiece, amazing, colorful, glistening"
-]
 splitImage(baseImage, numberOfPartsToSplit, depthToTraverse, depthPrompts)
